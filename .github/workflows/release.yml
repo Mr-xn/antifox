@@ -29,6 +29,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Validate existing release tag
+        run: |
+          if git show-ref --verify --quiet "refs/tags/${VERSION}"; then
+            TAG_SHA="$(git rev-parse "refs/tags/${VERSION}^{commit}")"
+            if [ "$TAG_SHA" != "$GITHUB_SHA" ]; then
+              echo "::error::Release tag ${VERSION} points to ${TAG_SHA}, not ${GITHUB_SHA}"
+              exit 1
+            fi
+          fi
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
