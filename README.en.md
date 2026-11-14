@@ -9,8 +9,8 @@ From recon to report delivery — multi-agent, autonomous · fully observable ·
 [中文](README.md) | English
 
 [![License](https://img.shields.io/badge/license-AGPL--3.0-blue.svg)](LICENSE)
-[![Release](https://img.shields.io/github/v/release/AntiFox-AI/antifox?color=success)](https://github.com/AntiFox-AI/antifox/releases/latest)
-[![Docker](https://img.shields.io/badge/GHCR-ghcr.io%2Fantifox--ai%2Fantifox-2496ED?logo=docker&logoColor=white)](https://github.com/AntiFox-AI/antifox/pkgs/container/antifox)
+[![Release](https://img.shields.io/github/v/release/Mr-xn/antifox?color=success)](https://github.com/Mr-xn/antifox/releases/latest)
+[![Docker](https://img.shields.io/badge/GHCR-ghcr.io%2Fmr--xn%2Fantifox-2496ED?logo=docker&logoColor=white)](https://github.com/Mr-xn/antifox/pkgs/container/antifox)
 [![Go](https://img.shields.io/badge/Go-1.24+-00ADD8?logo=go&logoColor=white)](go.mod)
 
 <img src="screenshots/login-en.png" alt="AntiFox" width="860" />
@@ -68,8 +68,8 @@ Requires **PostgreSQL**; exploration needs an **LLM** (`ANTHROPIC_API_KEY` or `O
 ### Option 1: One-command Docker deploy (recommended)
 
 ```bash
-curl -O https://raw.githubusercontent.com/AntiFox-AI/antifox/main/docker-compose.yml
-curl -O https://raw.githubusercontent.com/AntiFox-AI/antifox/main/.env.example
+curl -O https://raw.githubusercontent.com/Mr-xn/antifox/main/docker-compose.yml
+curl -O https://raw.githubusercontent.com/Mr-xn/antifox/main/.env.example
 cp .env.example .env          # set POSTGRES_PASSWORD
 docker compose up -d          # pulls the image + PostgreSQL and starts
 ```
@@ -78,7 +78,7 @@ Open **http://localhost:8787** — on first run, go to `/setup` to set the admin
 
 ### Option 2: Prebuilt binary
 
-Download the zip for your platform from [Releases](https://github.com/AntiFox-AI/antifox/releases/latest) (Linux amd64/arm64 · macOS amd64/arm64 · Windows amd64), then:
+Download the zip for your platform from [Releases](https://github.com/Mr-xn/antifox/releases/latest) (Linux amd64/arm64 · macOS amd64/arm64 · Windows amd64), then:
 
 ```bash
 cp config.example.json config.json    # fill in the database connection

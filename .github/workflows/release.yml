@@ -2,6 +2,23 @@ name: release
 on:
   push:
     tags: ["v*"]
+  workflow_dispatch: # 手动触发：在 Actions 页选分支并填版本号
+    inputs:
+      tag:
+        description: "版本号（如 v1.2.3；Release 将以此为 tag，缺失则基于所选分支创建）"
+        required: true
+        type: string
+      release:
+        description: "发布 GitHub Release"
+        type: boolean
+        default: true
+      docker:
+        description: "推送 GHCR 镜像"
+        type: boolean
+        default: true
+
+env:
+  VERSION: ${{ inputs.tag || github.ref_name }}
 
 permissions:
   contents: write # 创建 Release 需要
@@ -20,7 +37,7 @@ jobs:
       - run: npm ci
         working-directory: web
       - name: Stamp version from tag  # 前端版本随 release tag 自动注入，不写死
-        run: npm version "${GITHUB_REF_NAME#v}" --no-git-tag-version --allow-same-version
+        run: npm version "${VERSION#v}" --no-git-tag-version --allow-same-version
         working-directory: web
       - run: npm run build:static
         working-directory: web
@@ -62,11 +79,11 @@ jobs:
           # 内嵌 skill 库（report-generation 由 Go 侧 SeedSkillFiles 生成，故排除）
           mkdir -p server/skillsdist && cp -r skills/. server/skillsdist/ && rm -rf server/skillsdist/report-generation
           go build -tags embedui -trimpath \
-            -ldflags "-s -w -X main.version=${GITHUB_REF_NAME}" \
+            -ldflags "-s -w -X main.version=${VERSION}" \
             -o "$BIN" ./cmd/antifox
       - name: Package
         run: |
-          NAME="antifox-${GITHUB_REF_NAME}-${{ matrix.goos }}-${{ matrix.goarch }}"
+          NAME="antifox-${VERSION}-${{ matrix.goos }}-${{ matrix.goarch }}"
           mkdir -p "$NAME"
           cp -r skills "$NAME"/
           cp config.example.json "$NAME"/
@@ -92,6 +109,7 @@ jobs:
   # ③ 汇总所有 zip → 创建 GitHub Release
   release:
     needs: binaries
+    if: github.event_name == 'push' || inputs.release
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4 # 取 CHANGELOG.md 作 release 说明
@@ -111,6 +129,8 @@ jobs:
           echo "--- release notes ---"; cat RELEASE_NOTES.md
       - uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ env.VERSION }}
+          target_commitish: ${{ github.sha }}
           files: |
             dist/*.zip
             dist/SHA256SUMS
@@ -120,6 +140,7 @@ jobs:
   #    镜像里只装工具 + 放二进制；arm64 仅需模拟 apt 层，构建快很多）
   docker:
     needs: binaries
+    if: github.event_name == 'push' || inputs.docker
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -144,9 +165,9 @@ jobs:
       - uses: docker/metadata-action@v5
         id: meta
         with:
-          images: ghcr.io/antifox-ai/antifox
+          images: ghcr.io/mr-xn/antifox
           tags: |
-            type=ref,event=tag
+            type=raw,value=${{ env.VERSION }}
             type=raw,value=latest
       - uses: docker/build-push-action@v6
         with:
