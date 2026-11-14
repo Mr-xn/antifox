@@ -9,8 +9,8 @@
 中文 | [English](README.en.md)
 
 [![License](https://img.shields.io/badge/license-AGPL--3.0-blue.svg)](LICENSE)
-[![Release](https://img.shields.io/github/v/release/AntiFox-AI/antifox?color=success)](https://github.com/AntiFox-AI/antifox/releases/latest)
-[![Docker](https://img.shields.io/badge/GHCR-ghcr.io%2Fantifox--ai%2Fantifox-2496ED?logo=docker&logoColor=white)](https://github.com/AntiFox-AI/antifox/pkgs/container/antifox)
+[![Release](https://img.shields.io/github/v/release/Mr-xn/antifox?color=success)](https://github.com/Mr-xn/antifox/releases/latest)
+[![Docker](https://img.shields.io/badge/GHCR-ghcr.io%2Fmr--xn%2Fantifox-2496ED?logo=docker&logoColor=white)](https://github.com/Mr-xn/antifox/pkgs/container/antifox)
 [![Go](https://img.shields.io/badge/Go-1.24+-00ADD8?logo=go&logoColor=white)](go.mod)
 
 <img src="screenshots/login.png" alt="AntiFox" width="860" />
@@ -68,8 +68,8 @@ v2.0 聚焦一件事——**把"挖得到"做成"交得出"**。agent 在挖洞�
 ### 方式一：Docker 一键部署（推荐）
 
 ```bash
-curl -O https://raw.githubusercontent.com/AntiFox-AI/antifox/main/docker-compose.yml
-curl -O https://raw.githubusercontent.com/AntiFox-AI/antifox/main/.env.example
+curl -O https://raw.githubusercontent.com/Mr-xn/antifox/main/docker-compose.yml
+curl -O https://raw.githubusercontent.com/Mr-xn/antifox/main/.env.example
 cp .env.example .env          # 设 POSTGRES_PASSWORD
 docker compose up -d          # 自动拉镜像 + PostgreSQL 并启动
 ```
@@ -78,7 +78,7 @@ docker compose up -d          # 自动拉镜像 + PostgreSQL 并启动
 
 ### 方式二：下载预编译二进制
 
-到 [Releases](https://github.com/AntiFox-AI/antifox/releases/latest) 下载对应平台 zip（Linux amd64/arm64 · macOS amd64/arm64 · Windows amd64），解压后：
+到 [Releases](https://github.com/Mr-xn/antifox/releases/latest) 下载对应平台 zip（Linux amd64/arm64 · macOS amd64/arm64 · Windows amd64），解压后：
 
 ```bash
 cp config.example.json config.json    # 填好 database 连接
